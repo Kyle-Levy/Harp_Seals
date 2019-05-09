@@ -83,14 +83,18 @@ public class ExcelReader {
     }
 
 
-    public static double calculateClassAverage(HashMap<String, Student> studentHashMap){
+    public static int calculateClassAverage(HashMap<String, Student> studentHashMap){
         double total = 0;
 
         for(Student currentStudent : studentHashMap.values()){
             total += currentStudent.getFinalScore();
         }
 
-        return (total/studentHashMap.values().size());
+        BigDecimal roundingAverage = new BigDecimal((total/studentHashMap.values().size()));
+        roundingAverage = roundingAverage.setScale(0, RoundingMode.HALF_EVEN);
+
+
+        return roundingAverage.intValue();
     }
 
     public static ArrayList<String> getListOfFemaleCompSciStudents(HashMap<String, Student> studentHashMap){
@@ -101,6 +105,8 @@ public class ExcelReader {
                 femaleCompSciStudents.add(currentStudent.getStudentID());
             }
         }
+
+        Collections.sort(femaleCompSciStudents);
 
         return femaleCompSciStudents;
     }
